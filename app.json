@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/webView/webView",
+    "pages/welcome/welcome"
+  ],
+  "window": {
+    "defaultTitle": "千岛支付"
+  }
+}

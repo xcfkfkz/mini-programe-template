@@ -1,0 +1,8 @@
+<view>
+  <button    
+    onTap="pay"    
+    data-url="{{url}}"
+  >
+    去支付
+  </button>
+</view>

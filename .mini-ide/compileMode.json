@@ -1,0 +1,10 @@
+{
+  "modes": [
+    {
+      "title": "带商户信息的原生路径",
+      "page": "pages/welcome/welcome",
+      "chInfo": "ch_outerUrl",
+      "pageQuery": "needLogin=true&webViewUrl=https%3A%2F%2Fpay.qiandaoapp.com%2Fcollect-pay%2F%3Fu%3D2b660bdb425667d5e9fd1d3921c4610bf22d93ca446db96aa15d040fa75fe636"
+    }
+  ]
+}
