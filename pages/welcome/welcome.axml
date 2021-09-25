@@ -5,4 +5,19 @@
   >
     去支付
   </button>
+  <modal
+    show="{{needApprovePhone}}"
+  >
+    <view class="title">您的支付宝账号还未关联千岛账号</view>
+    <view class="btn-wrap">
+        <button onTap="cancel">不用了</button>
+        <button
+            onTap="popApprovePhone"
+            open-type="getAuthorize"
+            onGetAuthorize="onGetAuthorize"
+            onError="onAuthError"
+            scope='phoneNumber'
+        >去绑定</button>
+    </view>
+  </modal>
 </view>

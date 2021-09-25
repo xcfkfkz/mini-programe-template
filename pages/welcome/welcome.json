@@ -1,1 +1,6 @@
-{}
+{
+  "defaultTitle": "千岛收款",
+  "usingComponents": {
+    "modal": "mini-ali-ui/es/modal/index"
+  }
+}

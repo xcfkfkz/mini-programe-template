@@ -1,0 +1,31 @@
+.elli {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.am-modal {
+    overflow: hidden;
+}
+.am-modal-content {
+    padding: 0;
+}
+.title {
+    padding: 20px 12px;
+    font-size: 18px;
+    color: #333;
+}
+.btn-wrap {
+    border-top: 1rpx solid #e5e5e5;
+    display: flex;
+    font-size: 18px;
+}
+.btn-wrap button {
+    flex: 1;
+    border: unset;
+    padding: 12px;
+    line-height: 1.2;
+    color: #1677ff;
+}
+.btn-wrap button:first-child {
+    border-right: 1rpx solid #e5e5e5;
+}
