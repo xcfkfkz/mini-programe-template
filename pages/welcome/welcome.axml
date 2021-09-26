@@ -1,5 +1,11 @@
-<view>
-  <button    
+<view class="hor-mid">
+  <image class="qd-icon" src="https://cdn.qiandaoapp.com/admins/86784295536639e1730cb26b23510925.png" />
+  <view class="seller-info hor-mid">
+    <image class="avatar" src="{{avatar}}" />
+    <text class="nickname">{{nickname}}</text>
+  </view>
+  <button
+    class="will-pay"
     onTap="pay"    
     data-url="{{url}}"
   >

@@ -1,9 +1,10 @@
-import {loginWithAliAuthCode, loadCollectCodeInfo, loginByPhone} from '../../apis/http/index.js';
+import { loginWithAliAuth, loadCollectCodeInfo } from '../../apis/http/index.js';
 Page({
   data: {
     avatar: '',
     nickname: '',
     url: '',
+    authCode: '',
     needApprovePhone: false
   },
   onLoad(query) {
@@ -11,7 +12,7 @@ Page({
     this.setData({url});
     const { u = '' } = this.parseQueryString(url.split('?')[1]);
     loadCollectCodeInfo(u)
-      .then(res => {        
+      .then(res => {
         const { avatar = '', userName:nickname = '' } = (res && res.info) || {};
         this.setData({avatar, nickname})
       })
@@ -24,7 +25,9 @@ Page({
       scopes: ['auth_user'],
       success: async (res) => {
         // 获取到authCode
-        const { token = '' } = (await loginWithAliAuthCode(res && res.authCode)) || {};
+        const auth_code = res.authCode || '';
+        this.setData({ authCode: auth_code });
+        const { token = '' } = (await loginWithAliAuth({ auth_code })) || {};
         if (token) return this.goWithToken(token);
         this.setData({needApprovePhone: true})
       },
@@ -46,7 +49,10 @@ Page({
       success: async (res) => {
         const encryptedData = res.response;
         console.log('获得加密手机号', encryptedData)
-        const { token = '' } = (await loginByPhone(encryptedData)) || {};
+        const { token = '' } = (await loginWithAliAuth({
+          auth_code: this.data.authCode,
+          phone: encryptedData
+        })) || {};
         if (token) return this.goWithToken(token);
         this.goWithToken()
       },

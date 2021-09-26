@@ -1,44 +1,33 @@
+import { getWholeUrl } from '../../apis/http/index.js';
 Page({
-  data: {
-    url: '' // todo 记得删 
-  },
+  data: {},
   onLoad(query) {
-    // 页面加载    
-    const { webViewUrl = '' } = query || {};
-    console.log('query  ', query);
-    // 需要登录 的话，调用 静默登录authCode
-    // 请求 千岛接口 入参为authCode，
-    // 千岛登录接口如果 不包含手机号 那就再需要调用 getPhone
-    // 如果用户同意授权 调用千岛接口 入参为手机号的密文
-    // 如果用户拒绝授权 走原来逻辑 不带token 
-
-    // 
-    my.getAuthCode({
-      scopes: ['auth_user'],
-      success: (res) => {
-        // 用户授权支付宝信息 
-        
-        // 绑定过千岛账号 
-
-        // 没绑定过千岛账号
-        console.log('res', res);
-      },
-      fail: (err) => {
-        // 用户不同意 获取昵称头像性别地区 直接不带token跳转
-        console.log('err', err);
-        this.setData({url})
+    // 页面加载
+  },
+  scan() {
+    my.scan({
+      scanType: ['qrCode'],
+      success: async (res) => {
+        const { qrCode } = res || {};
+        if (!qrCode) return;
+        const wholeUrl = await getWholeUrl(qrCode);
+        const { query = '' } = this.parseQueryString(wholeUrl.split('?')[1]);
+        const webViewUrl = `https://pay.qiandaoapp.com/collect-pay/?${decodeURIComponent(query)}`;
+        const nativePath = '../welcome/welcome?webViewUrl=' + encodeURIComponent(webViewUrl);
+        my.navigateTo({ url: nativePath })
       }
     });
-
-    let url;
-    try {
-      url = decodeURIComponent(webViewUrl)
-    } catch (e) {
-      url = webViewUrl
-    }
-    this.setData({
-      url
-    })
+  },
+  parseQueryString(qs) {
+    return qs
+        ? qs.split('&').reduce((acc, s) => {
+          const tokens = s.split('=')
+          return {
+            ...acc,
+            [tokens[0]]: tokens[1]
+          }
+        }, {})
+        : {}
   },
   onReady() {
     // 页面加载完成
@@ -64,9 +53,9 @@ Page({
   onShareAppMessage() {
     // 返回自定义分享信息
     return {
-      title: 'My App',
-      desc: 'My App description',
-      path: 'pages/index/index',
+      title: '',
+      desc: '',
+      path: '',
     };
   },
 });

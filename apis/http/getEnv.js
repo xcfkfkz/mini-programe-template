@@ -3,7 +3,7 @@ export default (p => () => {
   return (p = new Promise(res => {
     my.getRunScene({
       success(result) {
-        res(result.envVersion === 'release' || true ? 'production' : 'development')
+        res(result.envVersion === 'release' ? 'production' : 'development')
       }
     })
   }))

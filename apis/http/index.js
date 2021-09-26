@@ -1,10 +1,11 @@
 import getEnvName from './getEnv.js';
 import hosts from './hosts.js';
-export const loginWithAliAuthCode = async (authCode) => {
+export const loginWithAliAuth = async (data = {}) => {
   const envName = await getEnvName();
+  const { grant_type = 'authorization_code', auth_code:code = '', phone:encrypted_data = '' } = data;
   const res = await new Promise((resolve, reject) => {
     const host = hosts[envName].GAPI;
-    const path = '/users/login/alipay';
+    const path = '/users/alipay/login';
     my.request({
       url: host + path,
       headers: {
@@ -14,15 +15,17 @@ export const loginWithAliAuthCode = async (authCode) => {
       },
       method: 'POST',
       data: {
-        auth_code: authCode
+        grant_type,
+        code,
+        encrypted_data
       },
       timeout: 0,
       dataType: 'json',
       success: (result) => {
-        resolve(result)
+        resolve(result.data)
       },
       fail: (err) => {
-        resolve(err)
+        resolve(err.data)
       }
     });
   });
@@ -43,40 +46,26 @@ export const loadCollectCodeInfo = async (sellerCode) => {
         u: sellerCode
       },
       success: (result) => {
-        resolve(result)
+        resolve(result.data)
       },
       fail: (err) => {
-        resolve(err)
+        resolve(err.data)
       }
     })
   });
   return res
 };
-export const loginByPhone = async (phone) => {
-  const envName = await getEnvName();
-  const res = await new Promise((resolve, reject) => {
-    const host = hosts[envName].GAPI;
-    const path = '/login/phone';
+export const getWholeUrl = async (shortUri) => {
+  const res = await new Promise(resolve => {
     my.request({
-      url: host + path,
-      headers: {
-        'X-Request-Package-ID': '1000',
-        'X-Request-Device': 'web',
-        'X-Request-Version': 'none'
+      url: shortUri,
+      success: result => {
+        resolve(result.headers && result.headers.location)
       },
-      method: 'POST',
-      data: {
-        auth_code: phone
-      },
-      timeout: 0,
-      dataType: 'json',
-      success: (result) => {
-        resolve(result)
-      },
-      fail: (err) => {
-        resolve(err)
+      fail: err => {
+        resolve(err.headers && err.headers.location)
       }
-    });
-  });
+    })
+  })
   return res
 }

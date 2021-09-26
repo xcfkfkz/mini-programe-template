@@ -1,3 +1,37 @@
+.hor-mid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.qd-icon {
+    width: 104rpx;
+    height: 58rpx;
+    margin-top: 150rpx;
+}
+.seller-info {
+    margin-top: 120rpx;
+}
+.avatar {
+    width: 88rpx;
+    height: 88rpx;
+    border-radius: 44rpx;
+}
+.nickname {
+    margin-top: 8rpx;
+    line-height: 48rpx;
+    height: 48rpx;
+    font-size: 32rpx;
+    color: #202426;
+}
+.will-pay {
+    margin-top: 120rpx;
+    width: 520rpx;
+    height: 80rpx;
+    border-radius: 40rpx;
+    line-height: 80rpx;
+    color: #fff;
+    background-color: #f35;
+}
 .elli {
     overflow: hidden;
     white-space: nowrap;

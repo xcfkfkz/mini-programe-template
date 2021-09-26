@@ -1,4 +1,5 @@
 
 <view>
-    
+    <image class="introduce" src="" />
+    <button class="scan-btn" onTap="scan">去扫码付款</button>
 </view>

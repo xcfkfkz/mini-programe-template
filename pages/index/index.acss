@@ -1,0 +1,13 @@
+.introduce {
+    width: 100%;
+}
+.scan-btn {
+    width: 520rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    border-radius: 40rpx;
+    background-color: #F35;
+    color: #fff;
+    margin: 40rpx auto 0;
+}
