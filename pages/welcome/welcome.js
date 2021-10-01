@@ -4,7 +4,6 @@ Page({
     avatar: '',
     nickname: '',
     url: '',
-    authCode: '',
     needApprovePhone: false
   },
   onLoad(query) {
@@ -26,7 +25,6 @@ Page({
       success: async (res) => {
         // 获取到authCode
         const auth_code = res.authCode || '';
-        this.setData({ authCode: auth_code });
         const { token = '' } = (await loginWithAliAuth({ auth_code })) || {};
         if (token) return this.goWithToken(token);
         this.setData({needApprovePhone: true})
@@ -44,27 +42,28 @@ Page({
     this.setData({needApprovePhone: false})
   },
   onGetAuthorize() {
-    console.log('用户同意授权手机号')
     my.getPhoneNumber({
-      success: async (res) => {
+      success: (res) => {
         const encryptedData = res.response;
-        console.log('获得加密手机号', encryptedData)
-        const { token = '' } = (await loginWithAliAuth({
-          auth_code: this.data.authCode,
-          phone: encryptedData
-        })) || {};
-        if (token) return this.goWithToken(token);
-        this.goWithToken()
+        my.getAuthCode({
+          scopes: ['auth_user'],
+          success: async (authInfo) => {
+            const { token = '' } = (await loginWithAliAuth({
+              auth_code: authInfo.authCode || '',
+              phone: encryptedData
+            })) || {};
+            if (token) return this.goWithToken(token);
+            this.goWithToken()
+          }
+        })
       },
       fail: (res) => {
-        console.log('同意但获取失败', res);
         this.goWithToken()
       },
     });
 
   },
   onAuthError() {
-    console.log('用户拒绝授权手机号');
     this.goWithToken()
   },
   parseQueryString(qs) {    
